@@ -1,0 +1,7 @@
+http.listener.host: "0.0.0.0"
+http.listener.port: "8082"
+http.listener.readtimeout: "30000"
+
+sfdc.username: "![SXJgsguRZjEvxKP3deKKFrdgSLcXqN4ym1KLxsA+OQk=]"
+sfdc.password: "![iKd12Zp2ENrg+SIxwV9auw==]"
+sfdc.securityToken: "![SsqVYrechFCAuunn1uOw40Ub9sGELvbMn9+q6hAm8Ec=]"

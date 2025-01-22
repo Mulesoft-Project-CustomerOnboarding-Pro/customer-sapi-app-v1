@@ -27,24 +27,29 @@
         <apikit:console config-ref="api-config" />
 		<error-handler ref="Error_Handler_Apikit" />
     </flow>
-    <flow name="post:\customers:application\json:api-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
+	<flow name="post:\customers:application\json:api-config">
+		<flow-ref doc:name="Flow Reference" doc:id="2dc89e05-0e76-4abd-819e-c752224a0cf9" name="initialization_request_payload" />
+		<logger level="INFO" doc:name="Start_Logger" doc:id="aae3aa70-5b46-46ba-a1e0-6e48727080f6" message="#[%dw 2.0&#10;&#10;output application/json indent = false &#10;--- &#10;{ 	&#10;    TimeStamp: vars.startTime, &#10;    transactionId: vars.requestData.headers.'x-cms-transactionid:',&#10;    AppName: app.name, 	&#10;    FlowName: flow.name, 	&#10;    BusinessProcessName:  &quot;Customer Registration&quot;, 	&#10;    Category:  &quot;Customer&quot;, 	&#10;    OriginatingApplication:  &quot;Process API&quot;, 	&#10;    DesinationApplication:  &quot;Salesforce&quot;, 	&#10;    CustomerId: &quot;NA&quot;, 	&#10;    txnState:  &quot;START &quot; &#10;}]"/>
+		<flow-ref doc:name="Reference to customer-registration-implSub_Flow" doc:id="6773879d-9e7b-46fc-a2a1-bb230d9495b4" name="customer-registration-implSub_Flow"/>
+		<logger level="INFO" doc:name="End_Logger" doc:id="197a628b-7ed3-45a2-9a53-f62e10438594" message="#[%dw 2.0 &#10;output application/json indent = false &#10;--- &#10;{ 	&#10;    TimeStamp: (now() &gt;&gt; &quot;UTC&quot;)  as String {format: &quot;yyyy-MM-dd:hh-mm-ss&quot;}, &#10;    transactionId: vars.headers.'x-cms-transactionId:',&#10;    AppName: app.name, 	&#10;    FlowName: flow.name, 	&#10;    BusinessProcessName:  &quot;Customer Registration&quot;, 	&#10;    Category:  &quot;Customer&quot;, 	&#10;    OriginatingApplication:  &quot;Process API&quot;, 	&#10;    DesinationApplication:  &quot;Salesforce&quot;, 	&#10;    CustomerId: &quot;NA&quot;, 	&#10;    txnState:  &quot;END&quot; &#10;}]"/>
+		<error-handler ref="Error_Handler_Application" />
+    </flow>
+    
+        <flow name="get:\ping:api-config">
+		<flow-ref doc:name="Flow Reference" doc:id="a5764407-5b69-44c6-ae10-e43bb383e669" name="initialization_request_payload" />
+		<logger level="INFO" doc:name="Start_Logger" doc:id="5d9a02ba-fc11-4220-9650-141038e811e0" message="#[%dw 2.0 var app = ???&#10;var flow = ???&#10;&#10;output application/json indent = false &#10;--- &#10;{ 	&#10;    TimeStamp: vars.startTime, &#10;    transactionId: vars.headers.'x-cms-transactionId:',&#10;    AppName: app.name, 	&#10;    FlowName: flow.name, 	&#10;    BusinessProcessName:  &quot;Customer Registration&quot;, 	&#10;    Category:  &quot;Customer&quot;, 	&#10;    OriginatingApplication:  &quot;Process API&quot;, 	&#10;    DesinationApplication:  &quot;Salesforce&quot;, 	&#10;    CustomerId: &quot;NA&quot;, 	&#10;    txnState:  &quot;START &quot; &#10;}]"/>
+		<ee:transform doc:name="Transform Message" doc:id="d0ec3a80-37ab-4747-96db-960d90f36f72" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
 {
-  msg: "failed operation",
-  code: 400,
-  success: false,
-  eventId: "dbfhjsdbhfbdo8ryt876t75ty",
-  error: {
-    "type": "BAD_REQUEST",
-    title: "Invalid Request",
-    details: "The input contains invalid data"
-  }
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		"eventInstanceId" : vars.requestData.headers.'x-cms-transactionId',
+		"status" : "Success"
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End_Logger" doc:id="7da53eaa-7b35-41a2-9623-91177a48095a" message="#[%dw 2.0 &#10;output application/json indent = false &#10;--- &#10;{ 	&#10;    TimeStamp: (now() &gt;&gt; &quot;UTC&quot;)  as String {format: &quot;yyyy-MM-dd:hh-mm-ss&quot;}, &#10;    transactionId: vars.headers.'x-cms-transactionId:',&#10;    AppName: app.name, 	&#10;    FlowName: flow.name, 	&#10;    BusinessProcessName:  &quot;Customer Registration&quot;, 	&#10;    Category:  &quot;Customer&quot;, 	&#10;    OriginatingApplication:  &quot;Process API&quot;, 	&#10;    DesinationApplication:  &quot;Salesforce&quot;, 	&#10;    CustomerId: &quot;NA&quot;, 	&#10;    txnState:  &quot;END&quot; &#10;}]"/>
     </flow>
 </mule>

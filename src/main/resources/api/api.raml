@@ -1,11 +1,11 @@
 #%RAML 1.0
-title: customer-Sapi-raml
+title: customer-sapi-raml
 description: this raml file will contains resource for the customer API
 version: 1.0.0
 
 
 uses:
-  common-library: /exchange_modules/3ef2629f-0322-47a1-b1cb-3f238ba5528e/common-fragmentsraml/1.0.6/common-fragments.raml
+  common-library: /exchange_modules/79bc7f5b-f575-471b-a247-9502aba1a082/common-fragment/1.0.1/common-fragments.raml
   
 
 /customers:
@@ -29,11 +29,22 @@ uses:
             type: object
             properties:
               customerResponse:
-                type: !include /exchange_modules/3ef2629f-0322-47a1-b1cb-3f238ba5528e/common-fragmentsraml/1.0.6/datatypes/success-response-dataType.raml
-        
-        
-        
-                  
+                type: common-library.success-response
+
+/ping:
+  get:
+    description: This API will help to check the health of the application. application is running up or not
+
+
+    is:
+      - common-library.common-header
+      - common-library.error-response
+    responses:
+      200:
+        body:
+          application/json:
+            type: common-library.success-response
+            example: !include /exchange_modules/79bc7f5b-f575-471b-a247-9502aba1a082/common-fragment/1.0.1/examples/success-response-example.json 
 
 
 
